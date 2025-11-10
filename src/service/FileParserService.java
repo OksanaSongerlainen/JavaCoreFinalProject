@@ -36,6 +36,9 @@ public class FileParserService {
 
 
                 Pattern amountPattern = Pattern.compile("-?\\d+");
+                if (amount <= 0) {
+                    throw new InvalidAmountException("Сумма перевода должна быть положительной: " + amount);
+                }
                 Matcher amountMatcher = amountPattern.matcher(line);
                 if (amountMatcher.find() && amount == null) {
                     amount = Integer.parseInt(amountMatcher.group());
@@ -57,6 +60,8 @@ public class FileParserService {
         if (amount <= 0) {
             throw new InvalidAmountException("Сумма перевода должна быть положительной: " + amount);
         }
+
+
 
         return new Transaction(fromAccount, toAccount, amount);
     }

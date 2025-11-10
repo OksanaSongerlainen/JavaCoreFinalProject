@@ -45,7 +45,7 @@ public class AccountService {
     public void saveAccounts() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ACCOUNTS_FILE))) {
             for (Account account : accounts.values()) {
-                writer.println(account.toString());
+                writer.println(account.getAccountNumber() + "|" + account.getBalance());
             }
         } catch (IOException e) {
             System.out.println("Ошибка при сохранении счетов: " + e.getMessage());
