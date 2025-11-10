@@ -57,6 +57,6 @@ public class FileParserService {
             throw new InvalidAmountException("Сумма перевода должна быть положительной: " + amount);
         }
 
-        return new Transaction(fromAccount, toAccount, amount);
+        return new Transaction(fromAccount, toAccount, amount, file.getName());
     }
 }
