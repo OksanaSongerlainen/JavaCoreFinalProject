@@ -6,8 +6,7 @@ import service.ReportService;
 import java.io.File;
 import java.util.Scanner;
 
-public class Main {
-    private static AccountService accountService = new AccountService();
+public class Main { private static AccountService accountService = new AccountService();
     private static FileParserService fileParserService = new FileParserService();
     private static ReportService reportService = new ReportService();
 
@@ -79,13 +78,14 @@ public class Main {
                     transaction.getAmount()
             );
 
-            // Записываем успех в отчет
-            String operation = transaction.toString();
+            // Записываем успех в отчет (ИСПРАВЛЕННЫЙ ФОРМАТ)
+            String operation = "перевод с " + transaction.getFromAccount() + " на " +
+                    transaction.getToAccount() + " " + transaction.getAmount();
             reportService.addReportEntry(file.getName(), operation, "успешно обработан");
             System.out.println("✓ Файл " + file.getName() + " обработан успешно");
 
         } catch (Exception e) {
-            // Записываем ошибку в отчет
+            // Записываем ошибку в отчет (ИСПРАВЛЕННЫЙ ФОРМАТ)
             String operation = "ошибка во время обработки";
             reportService.addReportEntry(file.getName(), operation, e.getMessage());
             System.out.println("✗ Ошибка в файле " + file.getName() + ": " + e.getMessage());

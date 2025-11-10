@@ -12,8 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileParserService {
-    public Transaction parseTransactionFile(File file) throws InvalidAccountFormatException,
-            InvalidAmountException {
+    public Transaction parseTransactionFile(File file) throws InvalidAccountFormatException, InvalidAmountException {
         String fromAccount = null;
         String toAccount = null;
         Integer amount = null;
@@ -21,7 +20,7 @@ public class FileParserService {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-
+                // Ищем счета
                 Pattern accountPattern = Pattern.compile("\\d{5}-\\d{5}");
                 Matcher accountMatcher = accountPattern.matcher(line);
 
@@ -34,11 +33,8 @@ public class FileParserService {
                     }
                 }
 
-
+                // Ищем сумму (ИСПРАВЛЕННАЯ ЛОГИКА)
                 Pattern amountPattern = Pattern.compile("-?\\d+");
-                if (amount <= 0) {
-                    throw new InvalidAmountException("Сумма перевода должна быть положительной: " + amount);
-                }
                 Matcher amountMatcher = amountPattern.matcher(line);
                 if (amountMatcher.find() && amount == null) {
                     amount = Integer.parseInt(amountMatcher.group());
@@ -48,7 +44,7 @@ public class FileParserService {
             throw new InvalidAmountException("Ошибка чтения файла: " + e.getMessage());
         }
 
-
+        // Валидация после парсинга (ИСПРАВЛЕННЫЙ ПОРЯДОК)
         if (fromAccount == null || toAccount == null) {
             throw new InvalidAccountFormatException("Не найдены номера счетов в файле");
         }
@@ -60,8 +56,6 @@ public class FileParserService {
         if (amount <= 0) {
             throw new InvalidAmountException("Сумма перевода должна быть положительной: " + amount);
         }
-
-
 
         return new Transaction(fromAccount, toAccount, amount);
     }

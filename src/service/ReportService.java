@@ -4,7 +4,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 
 public class ReportService {
-    private static final String REPORT_FILE = "data/report.txt";
+    private static final String REPORT_FILE = "report.txt";
 
     public void addReportEntry(String fileName, String operation, String status) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(REPORT_FILE, true))) {

@@ -9,24 +9,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
-    private static final String ACCOUNTS_FILE = "data/accounts.txt";
+    private static final String ACCOUNTS_FILE = "accounts.txt";
     private Map<String, Account> accounts = new HashMap<>();
 
-    public AccountService(Map<String, Account> accounts) {
-        this.accounts = accounts;
-    }
     public AccountService() {
         loadAccounts();
     }
+
     private void loadAccounts() {
         File file = new File(ACCOUNTS_FILE);
         if (!file.exists()) {
-            // Создаем тестовые счета
+
             accounts.put("12345-67890", new Account("12345-67890", 1000));
             accounts.put("23456-78901", new Account("23456-78901", 2000));
+            accounts.put("34567-89012", new Account("34567-89012", 1500)); // ДОБАВЬТЕ ЕЩЕ СЧЕТА
             saveAccounts();
             return;
         }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -39,11 +39,20 @@ public class AccountService {
             }
         } catch (IOException e) {
             System.out.println("Ошибка при загрузке счетов: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка формата данных в файле счетов: " + e.getMessage());
         }
     }
 
     public void saveAccounts() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(ACCOUNTS_FILE))) {
+        // Создаем папку если нужно
+        File file = new File(ACCOUNTS_FILE);
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
             for (Account account : accounts.values()) {
                 writer.println(account.getAccountNumber() + "|" + account.getBalance());
             }

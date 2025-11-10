@@ -1,6 +1,6 @@
 package exception;
 
-public class TransactionException extends Exception{
+public class TransactionException extends RuntimeException{
     public TransactionException(String message) {
         super(message);
     }
