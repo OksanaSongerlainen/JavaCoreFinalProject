@@ -5,8 +5,11 @@ import service.ReportService;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
-public class Main { private static AccountService accountService = new AccountService();
+public class Main {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static AccountService accountService = new AccountService();
     private static FileParserService fileParserService = new FileParserService();
     private static ReportService reportService = new ReportService();
 

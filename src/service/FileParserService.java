@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileParserService {
-    public Transaction parseTransactionFile(File file) throws InvalidAccountFormatException, InvalidAmountException {
+    public Transaction parseTransactionFile(File file) {
         String fromAccount = null;
         String toAccount = null;
         Integer amount = null;
@@ -20,31 +20,22 @@ public class FileParserService {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Ищем счета
-                Pattern accountPattern = Pattern.compile("\\d{5}-\\d{5}");
-                Matcher accountMatcher = accountPattern.matcher(line);
 
-                while (accountMatcher.find()) {
-                    String foundAccount = accountMatcher.group();
-                    if (fromAccount == null) {
-                        fromAccount = foundAccount;
-                    } else if (toAccount == null && !foundAccount.equals(fromAccount)) {
-                        toAccount = foundAccount;
-                    }
+                if (line.toLowerCase().contains("счет") || line.toLowerCase().contains("account")) {
+                    Pattern accountPattern = Pattern.compile("\\d{5}-\\d{5}");
+                    Matcher accountMatcher = accountPattern.matcher(line);
                 }
-
-                // Ищем сумму (ИСПРАВЛЕННАЯ ЛОГИКА)
-                Pattern amountPattern = Pattern.compile("-?\\d+");
-                Matcher amountMatcher = amountPattern.matcher(line);
-                if (amountMatcher.find() && amount == null) {
-                    amount = Integer.parseInt(amountMatcher.group());
+                if (line.toLowerCase().contains("сумма") || line.toLowerCase().contains("amount")) {
+                    Pattern amountPattern = Pattern.compile("\\d+");
+                    Matcher amountMatcher = amountPattern.matcher(line);
                 }
             }
+
         } catch (IOException e) {
             throw new InvalidAmountException("Ошибка чтения файла: " + e.getMessage());
         }
 
-        // Валидация после парсинга (ИСПРАВЛЕННЫЙ ПОРЯДОК)
+
         if (fromAccount == null || toAccount == null) {
             throw new InvalidAccountFormatException("Не найдены номера счетов в файле");
         }

@@ -75,13 +75,12 @@ public class AccountService {
         }
     }
 
-    public void transferMoney(String fromAccount, String toAccount, int amount)
-            throws AccountNotFoundException {
+    public void transferMoney(String fromAccount, String toAccount, int amount) {
         Account from = getAccount(fromAccount);
         Account to = getAccount(toAccount);
 
         if (from.getBalance() < amount) {
-            throw new AccountNotFoundException("Недостаточно средств на счете " + fromAccount);
+            throw new RuntimeException("Недостаточно средств на счете " + fromAccount);
         }
 
         from.setBalance(from.getBalance() - amount);
