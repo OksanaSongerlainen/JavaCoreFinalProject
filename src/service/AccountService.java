@@ -28,6 +28,7 @@ public class AccountService {
             accounts.put("67890-12345", new Account("67890-12345", 4000));
             accounts.put("78901-23456", new Account("78901-23456", 3500));
             accounts.put("89012-34567", new Account("89012-34567", 5000));
+            accounts.put("99999-99999", new Account("99999-99999", 1200));
             saveAccounts();
             return;
         }
