@@ -45,7 +45,7 @@ public class Main {
     }
 
     private static void processFiles() {
-        File inputDir = new File("input");
+        File inputDir = new File(AppConfig.INPUT_DIR);
         if (!inputDir.exists() || !inputDir.isDirectory()) {
             System.out.println("Папка input не существует!");
             return;
@@ -99,7 +99,7 @@ public class Main {
     }
 
     private static void moveFileToArchive(File file) {
-        File archiveDir = new File("archive");
+        File archiveDir = new File(AppConfig.ARCHIVE_DIR);
         if (!archiveDir.exists()) {
             archiveDir.mkdir();
         }

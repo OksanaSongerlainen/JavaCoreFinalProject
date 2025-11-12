@@ -22,7 +22,12 @@ public class AccountService {
 
             accounts.put("12345-67890", new Account("12345-67890", 1000));
             accounts.put("23456-78901", new Account("23456-78901", 2000));
-            accounts.put("34567-89012", new Account("34567-89012", 1500)); // ДОБАВЬТЕ ЕЩЕ СЧЕТА
+            accounts.put("34567-89012", new Account("34567-89012", 1500));
+            accounts.put("45678-90123", new Account("45678-90123", 3000));
+            accounts.put("56789-01234", new Account("56789-01234", 2500));
+            accounts.put("67890-12345", new Account("67890-12345", 4000));
+            accounts.put("78901-23456", new Account("78901-23456", 3500));
+            accounts.put("89012-34567", new Account("89012-34567", 5000));
             saveAccounts();
             return;
         }
@@ -76,6 +81,9 @@ public class AccountService {
     }
 
     public void transferMoney(String fromAccount, String toAccount, int amount) {
+        if (fromAccount.equals(toAccount)) {
+            throw new RuntimeException("Нельзя переводить на тот же счет: " + fromAccount);
+        }
         Account from = getAccount(fromAccount);
         Account to = getAccount(toAccount);
 

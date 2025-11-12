@@ -24,10 +24,21 @@ public class FileParserService {
                 if (line.toLowerCase().contains("счет") || line.toLowerCase().contains("account")) {
                     Pattern accountPattern = Pattern.compile("\\d{5}-\\d{5}");
                     Matcher accountMatcher = accountPattern.matcher(line);
+                    while (accountMatcher.find()) {
+                        String foundAccount = accountMatcher.group();
+                        if (fromAccount == null) {
+                            fromAccount = foundAccount;
+                        } else if (toAccount == null && !foundAccount.equals(fromAccount)) {
+                            toAccount = foundAccount;
+                        }
+                    }
                 }
                 if (line.toLowerCase().contains("сумма") || line.toLowerCase().contains("amount")) {
                     Pattern amountPattern = Pattern.compile("\\d+");
                     Matcher amountMatcher = amountPattern.matcher(line);
+                    if (amountMatcher.find() && amount == null) {
+                        amount = Integer.parseInt(amountMatcher.group());
+                    }
                 }
             }
 
